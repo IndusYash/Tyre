@@ -101,3 +101,118 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: |
+  User reported three bugs to fix on the Tyra Décor catalogue site:
+    1. Remove the "Scroll to explore" text at the bottom of the hero (looks cheap).
+    2. Remove the dark marquee strip below the hero (WEATHER-PROOF · ALL-SEASON CRAFT · MADE IN INDIA · ZERO MAINTENANCE · etc.).
+    3. Fix the story section quote card that was overlapping the chair image and unreadable.
+    4. Make every product "In Stock" — no product should show "Made to Order" any more.
+
+backend:
+  - task: "All products availability set to 'In Stock'"
+    implemented: true
+    working: true
+    file: "/app/lib/products-data.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Replaced every occurrence of `availability: 'Made to Order'` with `availability: 'In Stock'` in `/app/lib/products-data.js` (39 products total).
+            Called `POST /api/reseed` with the admin password to wipe the MongoDB `products` collection and re-insert the updated seed.
+            Local curl of `/api/products` shows all 39 products now return `availability: 'In Stock'` and none return `'Made to Order'`.
+            Needs testing agent to confirm via the public API endpoints:
+              - GET /api/products → every product's `availability` field must equal 'In Stock'
+              - GET /api/products?category=chairs, tables, planters, suites → every product still 'In Stock'
+              - GET /api/products/:id for any suite (e.g. TD-SU-SOV) → availability = 'In Stock'
+              - Suites (16 products) were the ones previously marked 'Made to Order' — special focus here.
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ BUG FIX VERIFIED - All 9 API tests passed successfully against http://localhost:3000
+            
+            CRITICAL TESTS (User's Primary Requirement):
+            ✅ Test 2: GET /api/products → All 39 products have availability = 'In Stock' (ZERO products with 'Made to Order')
+            ✅ Test 3: GET /api/products?category=suites → All 16 suites have availability = 'In Stock'
+               Suite SKUs verified: TD-SU-SOV, TD-SU-EXE, TD-SU-GHUB, TD-SU-SKY, TD-SU-PSQ, TD-SU-GRD, TD-SU-TN, TD-SU-CAFE, TD-SU-SOC, TD-SU-SUN, TD-SU-ORB, TD-SU-LR, TD-SU-RCL, TD-SU-STR, TD-SU-ACC, TD-SU-CTR
+            ✅ Test 7: GET /api/products?search=Sovereign → TD-SU-SOV (The Sovereign Suite) has availability = 'In Stock'
+            
+            ADDITIONAL TESTS:
+            ✅ Test 1: GET /api/health → Returns { ok: true, brand: 'Tyra Decor' }
+            ✅ Test 4: GET /api/products?category=chairs → All 6 chairs have availability = 'In Stock'
+            ✅ Test 5: GET /api/products?category=tables → All 4 tables have availability = 'In Stock'
+            ✅ Test 6: GET /api/products?category=planters → All 13 planters have availability = 'In Stock'
+            ✅ Test 8: POST /api/enquiries → Returns 201 with enquiry ID
+            ✅ Test 9: POST /api/admin/verify → Correct password returns 200 { ok: true }, wrong password returns 401
+            
+            CONCLUSION: The bug fix is complete and working. Previously 16 suite products (SKUs starting with TD-SU-) had availability: "Made to Order". Now ALL 39 products across all categories return availability: "In Stock". The user's requirement has been fully satisfied.
+
+frontend:
+  - task: "Remove Scroll-to-explore hint and marquee strip"
+    implemented: true
+    working: "NA"
+    file: "/app/app/page.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Deleted the absolutely-positioned "Scroll to explore" element at the bottom of the Hero component.
+            Removed the <Marquee /> render from the App() root layout so the dark rotating strip no longer appears below the hero.
+            The Marquee function is still declared but unused (harmless dead code, kept for possible future use).
+
+  - task: "Fix overlapping Story quote card"
+    implemented: true
+    working: "NA"
+    file: "/app/app/page.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            The quote card ("Not everything that reaches the end of its journey is meant to be discarded.") was previously absolutely positioned inside the image container (bottom-6 inset-x-6) which overlapped the chair image on smaller screens making the text unreadable.
+            Restructured it: the image is now inside its own rounded card, and the black quote card is a sibling BELOW the image (mt-6). Fully opaque bg-charcoal (not /95) so it's always crisp and readable at every viewport width.
+
+metadata:
+  created_by: "main_agent"
+  version: "1.2"
+  test_sequence: 2
+  run_ui: false
+
+test_plan:
+  current_focus: []
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "main"
+      message: |
+        Bug fix applied. The most important verification is that EVERY product returned by the public API now has `availability: 'In Stock'` — this was the user's most explicit ask ("make everything in stock there is nothing made to order about this website").
+        Previously 16 suites (SKUs starting with TD-SU-*) were marked "Made to Order". These have been updated in `lib/products-data.js` and the database was reseeded via `/api/reseed`.
+        Please verify by hitting `GET /api/products` and confirming zero products return `"Made to Order"` (or any value other than `"In Stock"`).
+        Also confirm suite-specific endpoints (`GET /api/products?category=suites`) return all 16 suites with `availability: "In Stock"`.
+        The UI-only fixes (removing scroll hint, removing marquee, fixing story quote overlap) do not require testing — I have visually verified them.
+    - agent: "testing"
+      message: |
+        ✅ BACKEND TESTING COMPLETE - All 9 API tests passed successfully.
+        
+        The critical bug fix has been verified: ALL 39 products now return availability: "In Stock" with ZERO products showing "Made to Order".
+        
+        Specifically verified:
+        - All 16 suites (TD-SU-*) that were previously "Made to Order" are now "In Stock"
+        - All 6 chairs are "In Stock"
+        - All 4 tables are "In Stock"
+        - All 13 planters are "In Stock"
+        - Search functionality works correctly (tested with "Sovereign")
+        - Enquiry submission works (returns 201 with ID)
+        - Admin verification works (correct password returns 200, wrong returns 401)
+        
+        The user's requirement "make everything in stock there is nothing made to order about this website" has been fully satisfied. No backend issues found.

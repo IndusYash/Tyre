@@ -200,10 +200,6 @@ function Hero() {
           </div>
         </motion.div>
       </div>
-
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.4em] text-muted-warm hidden md:block">
-        Scroll to explore
-      </div>
     </section>
   );
 }
@@ -258,15 +254,17 @@ function Story() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="relative aspect-[4/5] overflow-hidden bg-cream rounded-[2rem] shadow-[0_30px_80px_-40px_rgba(0,0,0,0.4)] border border-champagne/20"
+          className="relative"
         >
-          <img
-            src="/products/cottage-chair.jpg"
-            alt="Handwoven Tyra Decor detail"
-            className="w-full h-full object-contain p-6"
-          />
-          <div className="absolute bottom-6 inset-x-6 bg-charcoal/95 text-white px-6 py-5 rounded-2xl border border-champagne/20">
-            <div className="text-[10px] uppercase tracking-[0.35em] text-champagne mb-1 font-semibold">
+          <div className="relative aspect-[4/5] overflow-hidden bg-cream rounded-[2rem] shadow-[0_30px_80px_-40px_rgba(0,0,0,0.4)] border border-champagne/20">
+            <img
+              src="/products/cottage-chair.jpg"
+              alt="Handwoven Tyra Decor detail"
+              className="w-full h-full object-contain p-6"
+            />
+          </div>
+          <div className="mt-6 bg-charcoal text-white px-6 py-5 md:px-8 md:py-6 rounded-2xl border border-champagne/20">
+            <div className="text-[10px] uppercase tracking-[0.35em] text-champagne mb-2 font-semibold">
               Our Craft
             </div>
             <p className="font-serif text-lg md:text-xl leading-snug italic">
@@ -696,7 +694,6 @@ export default function App() {
     <main className="bg-cream text-charcoal">
       <Navbar />
       <Hero />
-      <Marquee />
       <Story />
       <Categories counts={counts} />
       <WhyChoose />
