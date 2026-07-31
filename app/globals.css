@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 40 40% 97%;
+    --background: 40 40% 95%;
     --foreground: 0 0% 10%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 10%;
@@ -15,35 +15,34 @@
     --secondary: 38 20% 92%;
     --secondary-foreground: 0 0% 10%;
     --muted: 38 15% 92%;
-    --muted-foreground: 0 0% 40%;
-    --accent: 36 34% 52%;
+    --muted-foreground: 0 0% 35%;
+    --accent: 36 40% 45%;
     --accent-foreground: 0 0% 10%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 38 15% 88%;
-    --input: 38 15% 88%;
-    --ring: 36 34% 52%;
+    --border: 38 15% 85%;
+    --input: 38 15% 85%;
+    --ring: 36 40% 45%;
     --radius: 0.25rem;
   }
 
   body {
-    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-    background-color: #FAF7F2;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    background-color: #F6F1E7;
     color: #1A1A1A;
   }
 
   h1, h2, h3, h4, h5, .font-serif {
-    font-family: var(--font-playfair), Georgia, serif;
-    letter-spacing: -0.01em;
+    font-family: var(--font-serif), Georgia, serif;
+    letter-spacing: -0.005em;
+    font-weight: 500;
   }
 
-  /* Hide Emergent watermark badge */
   #emergent-badge,
   .emergent-badge,
   a[href*="emergent.sh"],
   a[href*="emergent.dev"],
   a[href*="emergent.agent"],
-  a[href*="MADE WITH EMERGENT" i],
   div[class*="emergent" i][class*="badge" i] {
     display: none !important;
     visibility: hidden !important;
@@ -54,19 +53,25 @@
 
 @layer utilities {
   .font-serif {
-    font-family: var(--font-playfair), Georgia, serif;
+    font-family: var(--font-serif), Georgia, serif;
   }
   .text-gold {
-    color: #B08D57;
+    color: #A17C3C;
   }
   .bg-gold {
-    background-color: #B08D57;
+    background-color: #A17C3C;
   }
   .border-gold {
-    border-color: #B08D57;
+    border-color: #A17C3C;
   }
   .bg-cream {
-    background-color: #FAF7F2;
+    background-color: #F6F1E7;
+  }
+  .bg-cream-light {
+    background-color: #FBF7EE;
+  }
+  .bg-cream-dark {
+    background-color: #ECE4D2;
   }
   .bg-charcoal {
     background-color: #1A1A1A;
@@ -75,7 +80,7 @@
     color: #1A1A1A;
   }
   .text-muted-warm {
-    color: #6B6156;
+    color: #5A4F42;
   }
 
   .container-tyra {
@@ -87,43 +92,13 @@
     padding-right: 1.5rem;
   }
 
-  .fade-in-up {
-    animation: fadeInUp 0.8s ease forwards;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(24px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
   .hover-lift {
     transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
       box-shadow 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
   .hover-lift:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.25);
-  }
-
-  .gold-underline {
-    position: relative;
-    display: inline-block;
-  }
-  .gold-underline::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -0.35rem;
-    height: 2px;
-    background-color: #B08D57;
-    opacity: 0.9;
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.2);
   }
 
   .no-scrollbar::-webkit-scrollbar { display: none; }
