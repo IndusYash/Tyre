@@ -137,14 +137,14 @@ function Hero() {
               Est. 2025 · Kanpur, India
             </p>
           </div>
-          <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] leading-[0.98] text-charcoal font-medium mb-8 tracking-tight">
+          <h1 className="font-display text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[5rem] leading-[0.98] text-charcoal font-medium mb-6 md:mb-8 tracking-tight">
             Elevating spaces
             <br />
             with <span className="italic text-gold font-normal">timeless</span>
             <br />
             décor.
           </h1>
-          <p className="text-muted-warm text-base md:text-lg max-w-lg leading-relaxed mb-10">
+          <p className="text-muted-warm text-base md:text-lg max-w-lg leading-relaxed mb-8 md:mb-10">
             Premium furniture and planters, handwoven from recycled tyres by skilled
             artisans — designed to transform homes, hotels, offices and commercial
             interiors for a lifetime.
@@ -335,21 +335,19 @@ function Categories({ counts }) {
               <div className="w-14 h-14 rounded-full border border-champagne/50 flex items-center justify-center text-champagne mb-6 group-hover:bg-champagne group-hover:text-charcoal transition-colors">
                 <LayoutGrid size={22} />
               </div>
-              <p className="text-[11px] uppercase tracking-[0.4em] text-champagne font-semibold mb-3">
+              <p className="text-[10px] md:text-[11px] uppercase tracking-[0.4em] text-champagne font-semibold mb-3">
                 The Full Range
               </p>
-              <h3 className="font-display text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.02] mb-4">
+              <h3 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.02] mb-4">
                 Explore <span className="italic">all pieces</span>
               </h3>
-              <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 max-w-md">
+              <p className="text-white/70 text-sm md:text-base lg:text-lg leading-relaxed mb-8 max-w-md">
                 Browse the entire Tyra Décor catalogue — every chair, table, planter and
                 suite in one place.
               </p>
-              <div className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] font-semibold text-champagne group-hover:text-white transition-colors">
-                <span>{counts.all || 0} Pieces</span>
-                <span className="w-8 h-px bg-champagne/60" />
+              <div className="inline-flex items-center gap-3 text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-semibold text-champagne group-hover:text-white transition-colors">
                 <span className="inline-flex items-center gap-1.5">
-                  View Collection
+                  View Full Collection
                   <ArrowUpRight
                     size={14}
                     className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
@@ -381,9 +379,6 @@ function Categories({ counts }) {
                 />
                 <div className="absolute top-4 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-gold shadow-sm border border-gold/20 group-hover:bg-gold group-hover:text-white group-hover:border-gold transition-all">
                   <c.icon size={17} />
-                </div>
-                <div className="absolute top-4 right-4 text-[10px] uppercase tracking-[0.3em] text-muted-warm font-semibold bg-white/80 backdrop-blur px-3 py-1 rounded-full">
-                  {counts[c.slug] || 0} pcs
                 </div>
                 <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cream-light to-transparent pointer-events-none" />
               </div>

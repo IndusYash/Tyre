@@ -169,7 +169,7 @@ export default function CategoryPage() {
               <p className="text-[11px] tracking-[0.5em] uppercase text-muted-warm mb-2">
                 {meta.displayName}
               </p>
-              <h1 className="font-display text-5xl md:text-7xl lg:text-[5rem] leading-[0.98] text-charcoal font-medium tracking-tight mb-6">
+              <h1 className="font-display text-[2.5rem] sm:text-6xl md:text-7xl lg:text-[5rem] leading-[0.98] text-charcoal font-medium tracking-tight mb-6">
                 {meta.heroTitle.split(' ').map((w, i) => (
                   <span key={i}>
                     {i === 1 ? (
@@ -183,18 +183,12 @@ export default function CategoryPage() {
               <p className="text-muted-warm text-base md:text-lg leading-relaxed max-w-xl mb-8">
                 {meta.heroSub}
               </p>
-              <div className="flex items-center gap-5 text-[11px] uppercase tracking-widest text-charcoal font-semibold">
-                <div>
-                  <span className="font-serif text-3xl text-gold font-medium mr-2">
-                    {loading ? '—' : products.length}
-                  </span>
-                  Pieces
-                </div>
-                <div className="h-8 w-px bg-black/10" />
-                <div>
-                  <span className="font-serif text-3xl text-gold font-medium mr-2">100%</span>
-                  Recycled
-                </div>
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[10px] md:text-[11px] uppercase tracking-[0.35em] text-muted-warm font-semibold">
+                <span>Handwoven</span>
+                <span className="text-gold">✦</span>
+                <span>Weather-proof</span>
+                <span className="text-gold">✦</span>
+                <span>Made in Kanpur</span>
               </div>
             </motion.div>
             <motion.div
