@@ -1,12 +1,17 @@
 import './globals.css';
 import { Providers } from './providers';
-import { Cormorant_Garamond, Inter } from 'next/font/google';
+import { Cormorant_Garamond, Fraunces, Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/sonner';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-serif',
+  display: 'swap',
+});
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-display',
   display: 'swap',
 });
 const inter = Inter({
@@ -30,7 +35,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${fraunces.variable} ${inter.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -42,7 +47,7 @@ export default function RootLayout({ children }) {
           #emergent-badge, .emergent-badge, a[href*="emergent.sh"], a[href*="emergent.dev"], a[href*="emergent.agent"], iframe[src*="emergent"] { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
         `}</style>
       </head>
-      <body className="font-sans antialiased bg-[#F6F1E7] text-[#1A1A1A]">
+      <body className="font-sans antialiased bg-[#F5EEE0] text-[#1C1A17]">
         <Providers>{children}</Providers>
         <Toaster position="top-right" richColors />
       </body>

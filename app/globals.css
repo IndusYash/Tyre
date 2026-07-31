@@ -4,38 +4,45 @@
 
 @layer base {
   :root {
-    --background: 40 40% 95%;
-    --foreground: 0 0% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
-    --primary: 0 0% 10%;
-    --primary-foreground: 40 40% 97%;
-    --secondary: 38 20% 92%;
-    --secondary-foreground: 0 0% 10%;
-    --muted: 38 15% 92%;
-    --muted-foreground: 0 0% 35%;
-    --accent: 36 40% 45%;
-    --accent-foreground: 0 0% 10%;
+    --background: 40 43% 92%;
+    --foreground: 30 10% 10%;
+    --card: 42 60% 98%;
+    --card-foreground: 30 10% 10%;
+    --popover: 42 60% 98%;
+    --popover-foreground: 30 10% 10%;
+    --primary: 30 10% 10%;
+    --primary-foreground: 40 43% 95%;
+    --secondary: 38 25% 88%;
+    --secondary-foreground: 30 10% 10%;
+    --muted: 38 20% 90%;
+    --muted-foreground: 30 12% 32%;
+    --accent: 33 40% 40%;
+    --accent-foreground: 40 43% 95%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 38 15% 85%;
-    --input: 38 15% 85%;
-    --ring: 36 40% 45%;
+    --border: 38 20% 82%;
+    --input: 38 20% 82%;
+    --ring: 33 40% 40%;
     --radius: 1rem;
   }
 
   body {
     font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-    background-color: #F6F1E7;
-    color: #1A1A1A;
+    background-color: #F5EEE0;
+    color: #1C1A17;
+    font-feature-settings: 'ss01', 'ss02';
   }
 
   h1, h2, h3, h4, h5, .font-serif {
     font-family: var(--font-serif), Georgia, serif;
-    letter-spacing: -0.005em;
+    letter-spacing: -0.01em;
     font-weight: 500;
+  }
+
+  .font-display {
+    font-family: var(--font-display), Georgia, serif;
+    letter-spacing: -0.02em;
+    font-optical-sizing: auto;
   }
 
   #emergent-badge,
@@ -56,36 +63,57 @@
     font-family: var(--font-serif), Georgia, serif;
   }
   .text-gold {
-    color: #A17C3C;
+    color: #8F6F3F;
+  }
+  .text-champagne {
+    color: #C9A664;
   }
   .bg-gold {
-    background-color: #A17C3C;
+    background-color: #8F6F3F;
+  }
+  .bg-champagne {
+    background-color: #C9A664;
   }
   .border-gold {
-    border-color: #A17C3C;
+    border-color: #8F6F3F;
   }
   .bg-cream {
-    background-color: #F6F1E7;
+    background-color: #F5EEE0;
   }
   .bg-cream-light {
-    background-color: #FBF7EE;
+    background-color: #FCF8F0;
   }
   .bg-cream-dark {
-    background-color: #ECE4D2;
+    background-color: #EDE3CE;
+  }
+  .bg-cream-deeper {
+    background-color: #E4D8BC;
   }
   .bg-charcoal {
-    background-color: #1A1A1A;
+    background-color: #1C1A17;
+  }
+  .bg-charcoal-warm {
+    background-color: #262320;
   }
   .text-charcoal {
-    color: #1A1A1A;
+    color: #1C1A17;
   }
   .text-muted-warm {
-    color: #5A4F42;
+    color: #6B5D4A;
   }
 
   .container-tyra {
     width: 100%;
-    max-width: 1280px;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .container-narrow {
+    width: 100%;
+    max-width: 1080px;
     margin-left: auto;
     margin-right: auto;
     padding-left: 1.5rem;
@@ -103,4 +131,44 @@
 
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Subtle paper texture background */
+  .texture-paper {
+    background-image:
+      radial-gradient(rgba(143, 111, 63, 0.06) 1px, transparent 1px),
+      radial-gradient(rgba(143, 111, 63, 0.04) 1px, transparent 1px);
+    background-size: 30px 30px, 15px 15px;
+    background-position: 0 0, 15px 15px;
+  }
+
+  .ornament::before {
+    content: '✦';
+    color: #8F6F3F;
+    margin-right: 0.75rem;
+  }
+  .ornament::after {
+    content: '✦';
+    color: #8F6F3F;
+    margin-left: 0.75rem;
+  }
+
+  /* Marquee for luxury feel */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee 40s linear infinite;
+  }
+
+  /* Zoom lens */
+  .zoom-lens {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 9999px;
+    border: 2px solid rgba(143, 111, 63, 0.6);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3), inset 0 0 0 2px rgba(255, 255, 255, 0.4);
+    background-repeat: no-repeat;
+    transition: opacity 0.2s ease;
+  }
 }
