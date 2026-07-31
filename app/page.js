@@ -367,11 +367,20 @@ function Story() {
 // ---------- Categories showcase ----------
 const CAT_CARDS = [
   {
+    slug: 'all',
+    name: 'All Pieces',
+    tagline: 'The complete collection',
+    image: '/products/halo-armchair.jpg',
+    icon: LayoutGrid,
+    accent: 'The Full Range',
+  },
+  {
     slug: 'chairs',
     name: 'Chairs',
     tagline: 'Sculptural seating',
     image: '/products/halo-armchair.jpg',
     icon: Sofa,
+    accent: 'Handwoven Comfort',
   },
   {
     slug: 'tables',
@@ -379,6 +388,7 @@ const CAT_CARDS = [
     tagline: 'Statement centrepieces',
     image: '/products/hub-table.jpg',
     icon: TableIcon,
+    accent: 'Enduring Craft',
   },
   {
     slug: 'planters',
@@ -386,6 +396,7 @@ const CAT_CARDS = [
     tagline: 'Anchoring greenery',
     image: '/products/estate-planter.jpg',
     icon: Flower2,
+    accent: 'For Living Décor',
   },
   {
     slug: 'suites',
@@ -393,85 +404,147 @@ const CAT_CARDS = [
     tagline: 'Curated sets',
     image: '/products/suite-sovereign.jpg',
     icon: LayoutGrid,
+    accent: 'Complete Ensembles',
   },
 ];
 
-function Categories({ onSelect }) {
-  const [active, setActive] = useState('all');
+function Categories({ onSelect, counts }) {
+  const scrollToCatalogue = (slug) => {
+    onSelect(slug);
+    setTimeout(() => {
+      document.querySelector('#catalogue')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
   return (
-    <Section id="categories">
-      <div className="text-center max-w-3xl mx-auto mb-12">
+    <Section id="categories" className="bg-cream">
+      {/* Decorative divider ornament */}
+      <div className="flex items-center justify-center gap-4 mb-6">
+        <div className="h-px w-16 bg-gold/40" />
+        <div className="text-gold text-xl">✦</div>
+        <div className="h-px w-16 bg-gold/40" />
+      </div>
+
+      <div className="text-center max-w-3xl mx-auto mb-16">
         <Eyebrow>Shop by Category</Eyebrow>
-        <h2 className="font-serif text-4xl md:text-5xl leading-[1.1] text-charcoal font-medium tracking-tight">
-          Our favourite categories
+        <h2 className="font-serif text-4xl md:text-6xl leading-[1.05] text-charcoal font-medium tracking-tight">
+          Discover our <span className="italic text-gold">signature</span>
+          <br />
+          collections.
         </h2>
-        <p className="mt-5 text-muted-warm text-base md:text-lg leading-relaxed">
-          Every Tyra piece is hand-woven from recycled tyres — start browsing by the
-          category that inspires you.
+        <p className="mt-6 text-muted-warm text-base md:text-lg leading-relaxed">
+          Select a category to explore each handwoven piece — from sculptural chairs to
+          statement planters, every collection carries the soul of our craft.
         </p>
       </div>
 
-      {/* Pill filters (visual only, click scrolls to catalogue) */}
-      <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
-        {['All', 'Chairs', 'Tables', 'Planters', 'Suites'].map((label) => {
-          const slug = label.toLowerCase();
-          const isActive = active === slug;
-          return (
-            <button
-              key={label}
-              onClick={() => {
-                setActive(slug);
-                onSelect(slug);
-              }}
-              className={`px-6 h-10 rounded-full text-[11px] uppercase tracking-[0.25em] font-semibold border transition-all ${
-                isActive
-                  ? 'bg-gold text-white border-gold shadow-md'
-                  : 'bg-white/60 text-charcoal border-black/10 hover:border-gold hover:text-gold'
-              }`}
-            >
-              {label}
-            </button>
-          );
-        })}
-      </div>
+      {/* Featured big card + 4 smaller cards layout */}
+      <div className="grid grid-cols-12 gap-4 md:gap-6">
+        {/* Big "All" card - spans 2 rows on desktop */}
+        <motion.button
+          key={CAT_CARDS[0].slug}
+          onClick={() => scrollToCatalogue(CAT_CARDS[0].slug)}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="group col-span-12 lg:col-span-6 lg:row-span-2 relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#1A1A1A] to-[#2b2620] text-white text-left border border-gold/20"
+        >
+          <div className="absolute inset-0">
+            <img
+              src={CAT_CARDS[0].image}
+              alt={CAT_CARDS[0].name}
+              className="w-full h-full object-contain p-12 opacity-30 group-hover:opacity-40 group-hover:scale-105 transition-all duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-tr from-charcoal/95 via-charcoal/70 to-transparent" />
+          </div>
+          {/* Gold ornament corner */}
+          <div className="absolute top-6 right-6 flex items-center gap-2 text-[10px] uppercase tracking-[0.4em] text-[#D6B075]">
+            <span>Est. 2025</span>
+            <span>✦</span>
+          </div>
+          <div className="relative p-8 md:p-12 lg:p-16 min-h-[400px] lg:min-h-[600px] flex flex-col justify-end">
+            <div className="w-14 h-14 rounded-full border border-[#D6B075]/50 flex items-center justify-center text-[#D6B075] mb-6 group-hover:bg-[#D6B075] group-hover:text-charcoal transition-colors">
+              <LayoutGrid size={22} />
+            </div>
+            <p className="text-[11px] uppercase tracking-[0.4em] text-[#D6B075] font-semibold mb-3">
+              {CAT_CARDS[0].accent}
+            </p>
+            <h3 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.05] mb-4">
+              Explore <span className="italic">all pieces</span>
+            </h3>
+            <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 max-w-md">
+              Browse the entire Tyra Décor catalogue — every chair, table, planter and
+              suite in one place.
+            </p>
+            <div className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] font-semibold text-[#D6B075] group-hover:text-white transition-colors">
+              <span>{counts.all || 0} Pieces</span>
+              <span className="w-8 h-px bg-[#D6B075]/60" />
+              <span className="inline-flex items-center gap-1.5">
+                View Collection
+                <ArrowUpRight
+                  size={14}
+                  className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                />
+              </span>
+            </div>
+          </div>
+        </motion.button>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
-        {CAT_CARDS.map((c, i) => (
-          <motion.a
+        {/* 4 category cards in a 2x2 grid on the right */}
+        {CAT_CARDS.slice(1).map((c, i) => (
+          <motion.button
             key={c.slug}
-            href="#catalogue"
-            onClick={() => onSelect(c.slug)}
+            onClick={() => scrollToCatalogue(c.slug)}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: i * 0.08 }}
-            className="group block bg-cream-light rounded-3xl overflow-hidden hover-lift border border-black/5"
+            transition={{ duration: 0.5, delay: (i + 1) * 0.08 }}
+            className="group col-span-6 lg:col-span-3 relative overflow-hidden rounded-[1.75rem] bg-cream-light border border-black/5 hover:border-gold/40 text-left transition-all hover-lift"
           >
-            <div className="relative aspect-[4/5] bg-cream-light overflow-hidden">
+            <div className="relative aspect-[4/5] lg:aspect-square bg-cream-light overflow-hidden">
               <img
                 src={c.image}
                 alt={c.name}
-                className="w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute top-4 left-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur flex items-center justify-center text-gold shadow-sm">
-                <c.icon size={16} />
+              {/* Gold corner ornament */}
+              <div className="absolute top-4 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-gold shadow-sm border border-gold/20 group-hover:bg-gold group-hover:text-white group-hover:border-gold transition-all">
+                <c.icon size={17} />
               </div>
+              <div className="absolute top-4 right-4 text-[10px] uppercase tracking-[0.3em] text-muted-warm font-semibold bg-white/80 backdrop-blur px-3 py-1 rounded-full">
+                {counts[c.slug] || 0} pcs
+              </div>
+              {/* Bottom gradient */}
+              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cream-light to-transparent pointer-events-none" />
             </div>
-            <div className="p-5 bg-white flex items-center justify-between">
-              <div>
-                <div className="font-serif text-xl text-charcoal font-medium">
+            <div className="p-5 md:p-6 bg-white flex items-center justify-between border-t border-black/5">
+              <div className="min-w-0">
+                <p className="text-[9px] uppercase tracking-[0.35em] text-gold font-semibold mb-1">
+                  {c.accent}
+                </p>
+                <div className="font-serif text-2xl text-charcoal font-medium truncate">
                   {c.name}
                 </div>
-                <div className="text-[11px] uppercase tracking-[0.25em] text-muted-warm mt-0.5">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-muted-warm mt-0.5 truncate">
                   {c.tagline}
                 </div>
               </div>
-              <div className="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-charcoal group-hover:border-charcoal group-hover:text-white transition-all">
+              <div className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center flex-shrink-0 ml-3 group-hover:bg-charcoal group-hover:border-charcoal group-hover:text-white transition-all">
                 <ArrowUpRight size={15} />
               </div>
             </div>
-          </motion.a>
+          </motion.button>
         ))}
+      </div>
+
+      {/* Small badge below */}
+      <div className="mt-14 flex items-center justify-center gap-4">
+        <div className="h-px w-12 bg-black/10" />
+        <p className="text-[10px] uppercase tracking-[0.4em] text-muted-warm font-semibold">
+          Handwoven · Weather-proof · Made in Kanpur
+        </p>
+        <div className="h-px w-12 bg-black/10" />
       </div>
     </Section>
   );
@@ -1158,6 +1231,12 @@ export default function App() {
     [products]
   );
 
+  const counts = useMemo(() => {
+    const c = { all: products.length };
+    for (const p of products) c[p.category] = (c[p.category] || 0) + 1;
+    return c;
+  }, [products]);
+
   const chooseCategory = (slug) => {
     setCatFilter(slug);
     setCatKey((k) => k + 1);
@@ -1168,7 +1247,7 @@ export default function App() {
       <Navbar />
       <Hero />
       <Story />
-      <Categories onSelect={chooseCategory} />
+      <Categories onSelect={chooseCategory} counts={counts} />
       <WhyChoose />
 
       {loading ? (
