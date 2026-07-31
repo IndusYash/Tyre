@@ -19,8 +19,13 @@ import {
   Wrench,
   Star,
   ArrowUpRight,
+  ArrowRight,
   Filter,
   ArrowUpDown,
+  Sofa,
+  Table as TableIcon,
+  Flower2,
+  LayoutGrid,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -48,15 +53,14 @@ const COMPANY = {
 };
 
 const inr = (n) => `₹${Number(n).toLocaleString('en-IN')}`;
-
-const whatsappLinkForProduct = (p) => {
+const whatsappLink = (p) => {
   const msg = p
     ? `Hi Tyra Décor, I'd like to know more about the ${p.name} (SKU: ${p.sku}). Please share more details.`
     : `Hi Tyra Décor, I'd like to know more about your catalogue.`;
   return `https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent(msg)}`;
 };
 
-// ---------- Section wrapper ----------
+// ---------- Shared ----------
 function Section({ id, children, className = '' }) {
   return (
     <section id={id} className={`py-20 md:py-28 ${className}`}>
@@ -65,12 +69,10 @@ function Section({ id, children, className = '' }) {
   );
 }
 
-function Eyebrow({ children, dark = false }) {
+function Eyebrow({ children, className = '' }) {
   return (
     <p
-      className={`text-[11px] tracking-[0.4em] uppercase mb-5 font-semibold ${
-        dark ? 'text-[#D6B075]' : 'text-gold'
-      }`}
+      className={`text-[11px] tracking-[0.45em] uppercase mb-5 font-semibold text-gold ${className}`}
     >
       {children}
     </p>
@@ -81,7 +83,7 @@ function SectionHeading({ eyebrow, title, subtitle, center = true }) {
   return (
     <div className={`${center ? 'text-center max-w-3xl mx-auto' : ''} mb-14`}>
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      <h2 className="font-serif text-4xl md:text-5xl leading-[1.1] text-charcoal font-medium">
+      <h2 className="font-serif text-4xl md:text-5xl leading-[1.1] text-charcoal font-medium tracking-tight">
         {title}
       </h2>
       {subtitle && (
@@ -107,6 +109,7 @@ function Navbar() {
 
   const links = [
     { href: '#story', label: 'Story' },
+    { href: '#categories', label: 'Categories' },
     { href: '#catalogue', label: 'Catalogue' },
     { href: '#collections', label: 'Collections' },
     { href: '#reviews', label: 'Reviews' },
@@ -116,7 +119,7 @@ function Navbar() {
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'bg-cream/95 backdrop-blur-md border-b border-black/5 shadow-sm'
+          ? 'bg-cream/95 backdrop-blur-md border-b border-black/5 shadow-[0_2px_20px_-10px_rgba(0,0,0,0.15)]'
           : 'bg-transparent'
       }`}
     >
@@ -126,28 +129,26 @@ function Navbar() {
             Tyra <span className="text-gold italic">Décor</span>
           </span>
         </a>
-        <nav className="hidden md:flex items-center gap-10">
+        <nav className="hidden lg:flex items-center gap-10">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-[13px] text-charcoal/80 hover:text-charcoal transition-colors tracking-widest uppercase font-medium"
+              className="text-[12px] text-charcoal/80 hover:text-charcoal transition-colors tracking-[0.2em] uppercase font-semibold"
             >
               {l.label}
             </a>
           ))}
         </nav>
         <a
-          href={whatsappLinkForProduct(null)}
-          target="_blank"
-          rel="noreferrer"
-          className="hidden md:inline-flex items-center gap-2 text-[13px] tracking-widest uppercase text-charcoal hover:text-gold font-medium"
+          href={`tel:${COMPANY.phone1}`}
+          className="hidden md:inline-flex items-center gap-2 text-[12px] tracking-[0.15em] uppercase text-charcoal hover:text-gold font-semibold"
         >
           <Phone size={14} />
           {COMPANY.phone1}
         </a>
         <button
-          className="md:hidden p-2"
+          className="lg:hidden p-2"
           onClick={() => setOpen((v) => !v)}
           aria-label="Menu"
         >
@@ -160,7 +161,7 @@ function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="md:hidden overflow-hidden bg-cream border-b border-black/5"
+            className="lg:hidden overflow-hidden bg-cream border-b border-black/5"
           >
             <div className="container-tyra py-4 flex flex-col gap-4">
               {links.map((l) => (
@@ -194,19 +195,22 @@ function Hero() {
       id="top"
       className="relative min-h-[100svh] bg-cream flex items-center overflow-hidden"
     >
-      {/* Decorative gold line */}
-      <div className="absolute left-6 top-24 md:left-10 md:top-32 h-24 md:h-32 w-px bg-gold/40" />
-      <div className="container-tyra pt-28 md:pt-32 pb-16 grid md:grid-cols-2 gap-8 md:gap-16 items-center">
+      {/* Decorative vertical gold rule */}
+      <div className="absolute left-6 top-24 md:left-12 md:top-32 h-24 md:h-32 w-px bg-gold/50" />
+      {/* Soft radial glow */}
+      <div className="pointer-events-none absolute -top-40 right-0 w-[600px] h-[600px] rounded-full bg-gold/10 blur-3xl" />
+
+      <div className="container-tyra pt-28 md:pt-32 pb-16 grid md:grid-cols-2 gap-8 md:gap-14 items-center relative">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
           className="max-w-xl relative z-10"
         >
-          <p className="text-[11px] tracking-[0.45em] uppercase text-gold mb-8 font-semibold">
+          <p className="text-[11px] tracking-[0.5em] uppercase text-gold mb-8 font-semibold">
             Recycled · Refined · Remarkable
           </p>
-          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-charcoal font-medium mb-8">
+          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl leading-[1.02] text-charcoal font-medium mb-8 tracking-tight">
             Elevating spaces
             <br />
             with <span className="italic text-gold">timeless</span>
@@ -220,46 +224,59 @@ function Hero() {
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <a href="#catalogue">
-              <Button className="bg-charcoal hover:bg-black text-white rounded-none px-9 h-12 uppercase text-[11px] tracking-[0.3em] font-semibold">
+              <Button className="bg-charcoal hover:bg-black text-white rounded-full px-9 h-12 uppercase text-[11px] tracking-[0.3em] font-semibold shadow-lg">
                 Browse Catalogue
+                <ArrowRight size={14} className="ml-2" />
               </Button>
             </a>
             <a href="#story">
               <Button
                 variant="outline"
-                className="bg-transparent border-charcoal/40 hover:bg-charcoal hover:text-white text-charcoal rounded-none px-9 h-12 uppercase text-[11px] tracking-[0.3em] font-semibold"
+                className="bg-transparent border-charcoal/30 hover:bg-charcoal hover:text-white text-charcoal rounded-full px-9 h-12 uppercase text-[11px] tracking-[0.3em] font-semibold"
               >
                 Our Story
               </Button>
             </a>
           </div>
           <div className="mt-12 flex flex-wrap gap-x-8 gap-y-3 text-[11px] uppercase tracking-widest text-muted-warm">
-            <div>Handcrafted in Kanpur</div>
-            <div>· Weather-proof</div>
-            <div>· 100% Recycled</div>
+            <span>Handcrafted in Kanpur</span>
+            <span className="text-gold">·</span>
+            <span>Weather-proof</span>
+            <span className="text-gold">·</span>
+            <span>100% Recycled</span>
           </div>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.1, ease: 'easeOut' }}
+          transition={{ duration: 1, delay: 0.15, ease: 'easeOut' }}
           className="relative"
         >
-          <div className="relative aspect-[4/5] md:aspect-[3/4] bg-cream-dark overflow-hidden">
+          <div className="relative aspect-[4/5] md:aspect-[3/4] rounded-[2rem] overflow-hidden bg-cream-dark shadow-[0_30px_80px_-40px_rgba(0,0,0,0.4)]">
             <img
               src="/products/halo-armchair.jpg"
               alt="Tyra Decor Halo Armchair"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain p-8"
             />
           </div>
-          <div className="absolute -bottom-4 -left-4 md:-bottom-6 md:-left-6 bg-charcoal text-white px-6 py-4 md:px-8 md:py-5">
+          <div className="absolute -bottom-6 -left-6 md:-bottom-8 md:-left-8 bg-charcoal text-white px-6 py-4 md:px-8 md:py-5 rounded-2xl shadow-xl">
             <div className="text-[10px] uppercase tracking-[0.35em] text-[#D6B075] mb-1">
               Featured
             </div>
             <div className="font-serif text-lg md:text-xl">The Halo Armchair</div>
           </div>
+          <div className="absolute -top-4 -right-4 md:-top-6 md:-right-6 bg-cream-light backdrop-blur px-5 py-3 rounded-full shadow-lg border border-black/5">
+            <div className="text-[10px] uppercase tracking-[0.3em] text-gold font-semibold">
+              ✦ Bestseller
+            </div>
+          </div>
         </motion.div>
+      </div>
+
+      {/* Scroll hint */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.4em] text-muted-warm hidden md:block">
+        Scroll to explore
       </div>
     </section>
   );
@@ -277,7 +294,7 @@ function Story() {
           transition={{ duration: 0.8 }}
         >
           <Eyebrow>Our Story</Eyebrow>
-          <h2 className="font-serif text-4xl md:text-5xl leading-[1.1] text-charcoal mb-6 font-medium">
+          <h2 className="font-serif text-4xl md:text-5xl leading-[1.1] text-charcoal mb-6 font-medium tracking-tight">
             Where craft meets
             <br />
             conscious design.
@@ -315,7 +332,7 @@ function Story() {
                 Kanpur
               </div>
               <div className="text-[10px] uppercase tracking-widest text-muted-warm mt-1">
-                Handmade in India
+                Made in India
               </div>
             </div>
           </div>
@@ -325,14 +342,14 @@ function Story() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="relative aspect-[4/5] overflow-hidden bg-cream"
+          className="relative aspect-[4/5] overflow-hidden bg-cream rounded-[2rem] shadow-[0_30px_80px_-40px_rgba(0,0,0,0.4)]"
         >
           <img
             src="/products/cottage-chair.jpg"
             alt="Handwoven Tyra Decor detail"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain p-6"
           />
-          <div className="absolute bottom-0 inset-x-0 bg-charcoal text-white px-6 py-5">
+          <div className="absolute bottom-6 inset-x-6 bg-charcoal/95 text-white px-6 py-5 rounded-2xl">
             <div className="text-[10px] uppercase tracking-[0.35em] text-[#D6B075] mb-1">
               Our Craft
             </div>
@@ -347,6 +364,119 @@ function Story() {
   );
 }
 
+// ---------- Categories showcase ----------
+const CAT_CARDS = [
+  {
+    slug: 'chairs',
+    name: 'Chairs',
+    tagline: 'Sculptural seating',
+    image: '/products/halo-armchair.jpg',
+    icon: Sofa,
+  },
+  {
+    slug: 'tables',
+    name: 'Tables',
+    tagline: 'Statement centrepieces',
+    image: '/products/hub-table.jpg',
+    icon: TableIcon,
+  },
+  {
+    slug: 'planters',
+    name: 'Planters',
+    tagline: 'Anchoring greenery',
+    image: '/products/estate-planter.jpg',
+    icon: Flower2,
+  },
+  {
+    slug: 'suites',
+    name: 'Suites',
+    tagline: 'Curated sets',
+    image: '/products/suite-sovereign.jpg',
+    icon: LayoutGrid,
+  },
+];
+
+function Categories({ onSelect }) {
+  const [active, setActive] = useState('all');
+  return (
+    <Section id="categories">
+      <div className="text-center max-w-3xl mx-auto mb-12">
+        <Eyebrow>Shop by Category</Eyebrow>
+        <h2 className="font-serif text-4xl md:text-5xl leading-[1.1] text-charcoal font-medium tracking-tight">
+          Our favourite categories
+        </h2>
+        <p className="mt-5 text-muted-warm text-base md:text-lg leading-relaxed">
+          Every Tyra piece is hand-woven from recycled tyres — start browsing by the
+          category that inspires you.
+        </p>
+      </div>
+
+      {/* Pill filters (visual only, click scrolls to catalogue) */}
+      <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
+        {['All', 'Chairs', 'Tables', 'Planters', 'Suites'].map((label) => {
+          const slug = label.toLowerCase();
+          const isActive = active === slug;
+          return (
+            <button
+              key={label}
+              onClick={() => {
+                setActive(slug);
+                onSelect(slug);
+              }}
+              className={`px-6 h-10 rounded-full text-[11px] uppercase tracking-[0.25em] font-semibold border transition-all ${
+                isActive
+                  ? 'bg-gold text-white border-gold shadow-md'
+                  : 'bg-white/60 text-charcoal border-black/10 hover:border-gold hover:text-gold'
+              }`}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+        {CAT_CARDS.map((c, i) => (
+          <motion.a
+            key={c.slug}
+            href="#catalogue"
+            onClick={() => onSelect(c.slug)}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: i * 0.08 }}
+            className="group block bg-cream-light rounded-3xl overflow-hidden hover-lift border border-black/5"
+          >
+            <div className="relative aspect-[4/5] bg-cream-light overflow-hidden">
+              <img
+                src={c.image}
+                alt={c.name}
+                className="w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute top-4 left-4 w-10 h-10 rounded-full bg-white/80 backdrop-blur flex items-center justify-center text-gold shadow-sm">
+                <c.icon size={16} />
+              </div>
+            </div>
+            <div className="p-5 bg-white flex items-center justify-between">
+              <div>
+                <div className="font-serif text-xl text-charcoal font-medium">
+                  {c.name}
+                </div>
+                <div className="text-[11px] uppercase tracking-[0.25em] text-muted-warm mt-0.5">
+                  {c.tagline}
+                </div>
+              </div>
+              <div className="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-charcoal group-hover:border-charcoal group-hover:text-white transition-all">
+                <ArrowUpRight size={15} />
+              </div>
+            </div>
+          </motion.a>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
 // ---------- Why Choose ----------
 const WHY_ITEMS = [
   { icon: Award, title: 'Premium Quality', desc: 'Meticulous finishing on every piece.' },
@@ -354,20 +484,20 @@ const WHY_ITEMS = [
   { icon: IndianRupee, title: 'Competitive Pricing', desc: 'Direct from workshop to your space.' },
   { icon: ShieldCheck, title: 'Durable Materials', desc: 'Weather-proof, UV & heat resistant.' },
   { icon: Truck, title: 'Fast Delivery', desc: 'Pan-India logistics you can trust.' },
-  { icon: Star, title: 'Trusted by Customers', desc: 'Loved by homes and businesses alike.' },
+  { icon: Star, title: 'Trusted by Customers', desc: 'Loved by homes and businesses.' },
   { icon: Users, title: 'Bulk Order Support', desc: 'Volume pricing for B2B & projects.' },
   { icon: Wrench, title: 'Zero Maintenance', desc: 'Wipe clean. Built to endure.' },
 ];
 
 function WhyChoose() {
   return (
-    <Section id="why">
+    <Section id="why" className="bg-cream-light">
       <SectionHeading
         eyebrow="Why Tyra Décor"
         title="Built with intention. Made to last."
         subtitle="Every Tyra piece is engineered for endurance and finished for interiors that don't compromise. Here's why designers, hoteliers and homeowners choose us."
       />
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-black/10 border border-black/10">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {WHY_ITEMS.map((it, i) => (
           <motion.div
             key={it.title}
@@ -375,9 +505,9 @@ function WhyChoose() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.05 }}
-            className="bg-cream p-6 md:p-8 group hover:bg-cream-light transition-colors"
+            className="bg-white rounded-2xl p-6 md:p-7 border border-black/5 hover:border-gold/40 transition-all hover-lift group"
           >
-            <div className="w-11 h-11 flex items-center justify-center border border-gold/60 text-gold mb-5 group-hover:bg-gold group-hover:text-white transition-colors">
+            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gold/10 text-gold mb-5 group-hover:bg-gold group-hover:text-white transition-colors">
               <it.icon size={20} />
             </div>
             <h3 className="font-serif text-xl text-charcoal font-medium">{it.title}</h3>
@@ -401,50 +531,52 @@ function ProductCard({ product }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.5 }}
-      className="group bg-cream-light hover-lift flex flex-col border border-black/5"
+      className="group bg-white rounded-3xl hover-lift flex flex-col border border-black/5 overflow-hidden"
     >
       <div className="relative aspect-square overflow-hidden bg-cream-light">
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-105"
           loading="lazy"
         />
         {product.featured && (
-          <Badge className="absolute top-3 left-3 bg-gold text-white hover:bg-gold rounded-none text-[10px] tracking-widest uppercase font-medium">
+          <Badge className="absolute top-4 left-4 bg-gold text-white hover:bg-gold rounded-full text-[10px] tracking-widest uppercase font-semibold px-3 py-1">
             Featured
           </Badge>
         )}
         {discount > 0 && (
-          <Badge className="absolute top-3 right-3 bg-charcoal text-white rounded-none text-[10px] tracking-widest uppercase">
+          <Badge className="absolute top-4 right-4 bg-charcoal text-white rounded-full text-[10px] tracking-widest uppercase px-3 py-1">
             −{discount}%
           </Badge>
         )}
+        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-cream-light to-transparent pointer-events-none" />
       </div>
-      <div className="p-5 flex flex-col flex-1 bg-white">
-        <div className="text-[10px] uppercase tracking-[0.25em] text-gold mb-1 font-semibold">
+      <div className="p-5 flex flex-col flex-1">
+        <div className="text-[10px] uppercase tracking-[0.3em] text-gold mb-1.5 font-semibold">
           {product.category}
         </div>
         <h3 className="font-serif text-xl text-charcoal leading-snug font-medium">
           {product.name}
         </h3>
-        <p className="text-sm text-muted-warm mt-1 mb-3 line-clamp-2">
+        <p className="text-sm text-muted-warm mt-1 mb-4 line-clamp-2">
           {product.tagline || product.description}
         </p>
         <ul className="text-xs text-muted-warm space-y-1 mb-4">
-          <li>
-            <span className="text-charcoal/70 font-medium">Dimensions:</span>{' '}
-            {product.dimensions}
+          <li className="flex gap-2">
+            <span className="text-charcoal/50 min-w-[80px]">Dimensions</span>
+            <span className="text-charcoal/80">{product.dimensions}</span>
           </li>
-          <li>
-            <span className="text-charcoal/70 font-medium">Material:</span>{' '}
-            {product.material}
+          <li className="flex gap-2">
+            <span className="text-charcoal/50 min-w-[80px]">Material</span>
+            <span className="text-charcoal/80">{product.material}</span>
           </li>
-          <li>
-            <span className="text-charcoal/70 font-medium">SKU:</span> {product.sku}
+          <li className="flex gap-2">
+            <span className="text-charcoal/50 min-w-[80px]">SKU</span>
+            <span className="text-charcoal/80">{product.sku}</span>
           </li>
         </ul>
-        <div className="mt-auto pt-3 border-t border-black/5 flex items-end justify-between">
+        <div className="mt-auto pt-4 border-t border-black/5 flex items-end justify-between">
           <div>
             <div className="font-serif text-2xl text-charcoal font-medium">
               {inr(product.price)}
@@ -459,8 +591,10 @@ function ProductCard({ product }) {
             </div>
           </div>
           <span
-            className={`text-[10px] uppercase tracking-widest inline-flex items-center gap-1.5 ${
-              product.availability === 'In Stock' ? 'text-green-700' : 'text-amber-700'
+            className={`text-[10px] uppercase tracking-widest inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ${
+              product.availability === 'In Stock'
+                ? 'text-green-800 bg-green-50 border border-green-200'
+                : 'text-amber-800 bg-amber-50 border border-amber-200'
             }`}
           >
             <span
@@ -477,14 +611,19 @@ function ProductCard({ product }) {
 }
 
 // ---------- Catalogue ----------
-function Catalogue({ products }) {
-  const [category, setCategory] = useState('all');
+function Catalogue({ products, defaultCategory = 'all', filterKey = 0 }) {
+  const [category, setCategory] = useState(defaultCategory);
   const [material, setMaterial] = useState('all');
   const [color, setColor] = useState('all');
   const [priceRange, setPriceRange] = useState([0, 40000]);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('default');
   const [filtersOpen, setFiltersOpen] = useState(false);
+
+  // Sync external category selection
+  useEffect(() => {
+    setCategory(defaultCategory);
+  }, [defaultCategory, filterKey]);
 
   const materials = useMemo(
     () => Array.from(new Set(products.map((p) => p.material))),
@@ -533,15 +672,15 @@ function Catalogue({ products }) {
         subtitle="Explore our full range of chairs, tables, planters and complete suites — each piece handwoven and made to endure."
       />
 
-      <div className="flex flex-wrap items-center justify-center gap-1 mb-8">
+      <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
         {categories.map((c) => (
           <button
             key={c.slug}
             onClick={() => setCategory(c.slug)}
-            className={`px-6 py-2.5 text-[11px] uppercase tracking-[0.25em] font-semibold transition-colors border ${
+            className={`px-6 h-10 rounded-full text-[11px] uppercase tracking-[0.25em] font-semibold border transition-all ${
               category === c.slug
-                ? 'bg-charcoal text-white border-charcoal'
-                : 'bg-transparent text-charcoal border-black/20 hover:border-charcoal'
+                ? 'bg-charcoal text-white border-charcoal shadow-md'
+                : 'bg-white text-charcoal border-black/10 hover:border-charcoal'
             }`}
           >
             {c.name}
@@ -553,23 +692,23 @@ function Catalogue({ products }) {
         <div className="relative flex-1">
           <Search
             size={16}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-warm"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-warm"
           />
           <Input
             placeholder="Search by name, SKU, description…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 h-11 rounded-none border-black/15 bg-white"
+            className="pl-11 h-12 rounded-full border-black/10 bg-white"
           />
         </div>
         <Select value={sort} onValueChange={setSort}>
-          <SelectTrigger className="md:w-56 h-11 rounded-none border-black/15 bg-white">
+          <SelectTrigger className="md:w-56 h-12 rounded-full border-black/10 bg-white px-5">
             <div className="flex items-center gap-2">
               <ArrowUpDown size={14} />
               <SelectValue />
             </div>
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="rounded-2xl">
             <SelectItem value="default">Sort: Featured</SelectItem>
             <SelectItem value="price_asc">Price: Low to High</SelectItem>
             <SelectItem value="price_desc">Price: High to Low</SelectItem>
@@ -579,7 +718,7 @@ function Catalogue({ products }) {
         <Button
           onClick={() => setFiltersOpen((v) => !v)}
           variant="outline"
-          className="h-11 rounded-none border-black/20 hover:border-charcoal hover:bg-charcoal hover:text-white uppercase text-xs tracking-widest font-semibold"
+          className="h-12 px-6 rounded-full border-black/10 bg-white hover:border-charcoal hover:bg-charcoal hover:text-white uppercase text-xs tracking-widest font-semibold"
         >
           <Filter size={14} className="mr-2" />
           Filters
@@ -594,16 +733,16 @@ function Catalogue({ products }) {
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden mb-8"
           >
-            <div className="bg-white border border-black/10 p-6 grid md:grid-cols-3 gap-6">
+            <div className="bg-white border border-black/10 p-6 rounded-2xl grid md:grid-cols-3 gap-6">
               <div>
                 <Label className="text-xs uppercase tracking-widest text-muted-warm">
                   Material
                 </Label>
                 <Select value={material} onValueChange={setMaterial}>
-                  <SelectTrigger className="mt-2 h-10 rounded-none border-black/15">
+                  <SelectTrigger className="mt-2 h-10 rounded-full border-black/10">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="rounded-2xl">
                     <SelectItem value="all">All Materials</SelectItem>
                     {materials.map((m) => (
                       <SelectItem key={m} value={m}>
@@ -618,10 +757,10 @@ function Catalogue({ products }) {
                   Colour
                 </Label>
                 <Select value={color} onValueChange={setColor}>
-                  <SelectTrigger className="mt-2 h-10 rounded-none border-black/15">
+                  <SelectTrigger className="mt-2 h-10 rounded-full border-black/10">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="rounded-2xl">
                     <SelectItem value="all">All Colours</SelectItem>
                     {colors.map((c) => (
                       <SelectItem key={c} value={c}>
@@ -696,15 +835,14 @@ function Collections({ suites }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: i * 0.1 }}
-            className="relative group overflow-hidden aspect-[3/4] bg-charcoal block"
+            className="relative group overflow-hidden aspect-[3/4] bg-cream-light rounded-3xl block border border-black/5 hover-lift"
           >
             <img
               src={s.image}
               alt={s.name}
-              className="absolute inset-0 w-full h-full object-contain p-6 opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
-              style={{ backgroundColor: '#F6F1E7' }}
+              className="absolute inset-0 w-full h-full object-contain p-8 transition-transform duration-700 group-hover:scale-105"
             />
-            <div className="absolute inset-x-0 bottom-0 p-8 text-white bg-gradient-to-t from-black/90 to-transparent">
+            <div className="absolute inset-x-0 bottom-0 p-8 text-white bg-gradient-to-t from-black/90 via-black/50 to-transparent">
               <p className="text-[10px] uppercase tracking-[0.35em] text-[#D6B075] mb-2 font-semibold">
                 Suite Collection
               </p>
@@ -759,7 +897,7 @@ function Testimonials() {
         <p className="text-[11px] tracking-[0.4em] uppercase text-[#D6B075] mb-5 font-semibold">
           Testimonials
         </p>
-        <h2 className="font-serif text-4xl md:text-5xl leading-tight font-medium">
+        <h2 className="font-serif text-4xl md:text-5xl leading-tight font-medium tracking-tight">
           Loved by homes and businesses alike.
         </h2>
       </div>
@@ -771,7 +909,7 @@ function Testimonials() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
-            className="border border-white/10 p-8 bg-white/[0.03] hover:bg-white/[0.06] transition-colors"
+            className="border border-white/10 p-8 bg-white/[0.03] hover:bg-white/[0.06] rounded-3xl transition-colors"
           >
             <div className="flex gap-1 mb-4 text-[#D6B075]">
               {Array.from({ length: t.rating }).map((_, j) => (
@@ -783,7 +921,7 @@ function Testimonials() {
             </p>
             <footer>
               <div className="font-medium text-white">{t.name}</div>
-              <div className="text-xs uppercase tracking-widest text-white/60">
+              <div className="text-xs uppercase tracking-widest text-white/60 mt-1">
                 {t.role}
               </div>
             </footer>
@@ -791,6 +929,53 @@ function Testimonials() {
         ))}
       </div>
     </Section>
+  );
+}
+
+// ---------- CTA banner before footer ----------
+function CTABanner() {
+  return (
+    <section className="relative overflow-hidden">
+      <div className="container-tyra py-16 md:py-20">
+        <div className="relative bg-gradient-to-br from-[#1A1A1A] to-[#2b2620] rounded-[2.5rem] px-8 md:px-16 py-14 md:py-20 text-white overflow-hidden">
+          {/* Decorative glow */}
+          <div className="pointer-events-none absolute -top-24 -right-24 w-96 h-96 rounded-full bg-gold/20 blur-3xl" />
+          <div className="grid md:grid-cols-2 gap-8 items-center relative">
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.4em] text-[#D6B075] mb-5 font-semibold">
+                Bulk Orders · Interior Projects
+              </p>
+              <h3 className="font-serif text-3xl md:text-5xl leading-tight font-medium tracking-tight">
+                Furnishing a home,
+                <br /> hotel or workspace?
+              </h3>
+              <p className="mt-5 text-white/70 leading-relaxed max-w-lg">
+                We work directly with designers, hoteliers and architects to deliver
+                bespoke, weather-ready furniture at scale. Reach out on WhatsApp for
+                priority quotes.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-4 md:justify-end">
+              <a href={whatsappLink(null)} target="_blank" rel="noreferrer">
+                <Button className="bg-[#D6B075] hover:bg-[#c39e5f] text-charcoal rounded-full px-8 h-12 uppercase text-[11px] tracking-[0.3em] font-semibold shadow-lg">
+                  <MessageCircle size={16} className="mr-2" />
+                  Chat on WhatsApp
+                </Button>
+              </a>
+              <a href={`tel:${COMPANY.phone1}`}>
+                <Button
+                  variant="outline"
+                  className="bg-transparent border-white/30 hover:bg-white hover:text-charcoal text-white rounded-full px-8 h-12 uppercase text-[11px] tracking-[0.3em] font-semibold"
+                >
+                  <Phone size={14} className="mr-2" />
+                  Call Us
+                </Button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -820,8 +1005,8 @@ function Footer() {
               </a>
             </li>
             <li>
-              <a href="#why" className="hover:text-white">
-                Why Tyra
+              <a href="#categories" className="hover:text-white">
+                Categories
               </a>
             </li>
             <li>
@@ -895,7 +1080,7 @@ function Footer() {
               href={`https://instagram.com/${COMPANY.instagram}`}
               target="_blank"
               rel="noreferrer"
-              className="w-9 h-9 flex items-center justify-center border border-white/20 hover:bg-[#D6B075] hover:border-[#D6B075] hover:text-charcoal transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-full border border-white/20 hover:bg-[#D6B075] hover:border-[#D6B075] hover:text-charcoal transition-colors"
               aria-label="Instagram"
             >
               <Instagram size={16} />
@@ -904,14 +1089,14 @@ function Footer() {
               href={`https://wa.me/${COMPANY.whatsapp}`}
               target="_blank"
               rel="noreferrer"
-              className="w-9 h-9 flex items-center justify-center border border-white/20 hover:bg-[#D6B075] hover:border-[#D6B075] hover:text-charcoal transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-full border border-white/20 hover:bg-[#D6B075] hover:border-[#D6B075] hover:text-charcoal transition-colors"
               aria-label="WhatsApp"
             >
               <MessageCircle size={16} />
             </a>
             <a
               href={`mailto:${COMPANY.email}`}
-              className="w-9 h-9 flex items-center justify-center border border-white/20 hover:bg-[#D6B075] hover:border-[#D6B075] hover:text-charcoal transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-full border border-white/20 hover:bg-[#D6B075] hover:border-[#D6B075] hover:text-charcoal transition-colors"
               aria-label="Email"
             >
               <Mail size={16} />
@@ -936,10 +1121,10 @@ function Footer() {
 function FloatingWhatsApp() {
   return (
     <a
-      href={whatsappLinkForProduct(null)}
+      href={whatsappLink(null)}
       target="_blank"
       rel="noreferrer"
-      className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-[#25D366] hover:bg-[#1ebe5c] text-white flex items-center justify-center shadow-2xl transition-transform hover:scale-105"
+      className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-[#25D366] hover:bg-[#1ebe5c] text-white flex items-center justify-center shadow-2xl transition-transform hover:scale-110"
       aria-label="WhatsApp"
     >
       <MessageCircle size={26} />
@@ -951,6 +1136,8 @@ function FloatingWhatsApp() {
 export default function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [catFilter, setCatFilter] = useState('all');
+  const [catKey, setCatKey] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -971,11 +1158,17 @@ export default function App() {
     [products]
   );
 
+  const chooseCategory = (slug) => {
+    setCatFilter(slug);
+    setCatKey((k) => k + 1);
+  };
+
   return (
     <main className="bg-cream text-charcoal">
       <Navbar />
       <Hero />
       <Story />
+      <Categories onSelect={chooseCategory} />
       <WhyChoose />
 
       {loading ? (
@@ -984,12 +1177,13 @@ export default function App() {
         </div>
       ) : (
         <>
-          <Catalogue products={products} />
+          <Catalogue products={products} defaultCategory={catFilter} filterKey={catKey} />
           <Collections suites={suites} />
         </>
       )}
 
       <Testimonials />
+      <CTABanner />
       <Footer />
       <FloatingWhatsApp />
     </main>
