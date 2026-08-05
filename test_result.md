@@ -103,11 +103,157 @@
 #====================================================================================================
 
 user_problem_statement: |
-  User reported three bugs to fix on the Tyra Décor catalogue site:
-    1. Remove the "Scroll to explore" text at the bottom of the hero (looks cheap).
-    2. Remove the dark marquee strip below the hero (WEATHER-PROOF · ALL-SEASON CRAFT · MADE IN INDIA · ZERO MAINTENANCE · etc.).
-    3. Fix the story section quote card that was overlapping the chair image and unreadable.
-    4. Make every product "In Stock" — no product should show "Made to Order" any more.
+  Bug: On the product detail modal (opened by clicking a product card), users can NOT scroll down.
+  The right-hand details column has more content than fits in one viewport, but scrolling was
+  blocked because the modal had nested `overflow-hidden` on the grid + `overflow-y-auto` only on
+  the right column. When the mouse was over the left image side (or outside the right column),
+  scroll events did nothing. This was reported specifically on the Bumble Bee sculpture modal
+  where the description + spec rows + CTA buttons extend below the viewport.
+
+frontend:
+  - task: "Product modal scroll works from anywhere in the modal"
+    implemented: true
+    working: true
+    file: "/app/components/tyra/product-modal.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Restructured the modal scroll model:
+              - Outer motion.div now has `overflow-y-auto overflow-x-hidden` and `max-h-[92vh]` so the
+                ENTIRE modal scrolls as a single unit regardless of where the cursor is (image side,
+                details side, or on empty space).
+              - Removed the `overflow-hidden` and `max-h-[92vh]` from the inner grid.
+              - Removed the separate `overflow-y-auto` from the right details column so it now flows
+                naturally into the parent scroll.
+              - Image column is now `md:sticky md:top-0 md:self-start md:max-h-[92vh]` so it stays
+                visible while the details scroll on wide screens.
+              - Close button uses `fixed md:absolute` so it remains reachable even when scrolled.
+            Please verify by opening the sculpture modal (any card at `/category/sculptures`) and
+            confirming scrolling with:
+              1) mouse wheel over the LEFT image column,
+              2) mouse wheel over the RIGHT details column,
+              3) mouse wheel over the space between panels,
+              4) touch scroll on mobile viewport (390×844 or similar).
+            The description text, spec rows, WhatsApp/Call CTAs and the "All prices exclusive of GST"
+            footer should all be reachable by scrolling within the modal without dismissing it.
+            Also verify that clicking outside the modal (on the dark backdrop) still closes it.
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ BUG FIX VERIFIED - All modal scroll tests passed successfully.
+            
+            DESKTOP TESTING (1920×1080):
+            ✅ Modal opens successfully for "The Bumble Bee" sculpture
+            ✅ Modal header displays correctly: "SCULPTURES · TD-SC-BEE" + "The Bumble Bee" + "Price on Request" (italic)
+            ✅ Scrolling works from LEFT image column (scroll position changed from 0px to 2px)
+            ✅ Scrolling works from RIGHT details column (scroll position changed from 0px to 2px)
+            ✅ All bottom content reachable: WhatsApp button, Call button, and footer text all visible
+            ✅ All spec rows visible: Dimensions, Material, Colours, Availability
+            ✅ Can scroll back UP to top of modal
+            ✅ Close button remains visible and clickable when scrolled
+            ✅ Clicking backdrop closes the modal
+            ✅ Main page scroll NOT locked after closing modal (body overflow style is empty, page scrolls normally)
+            
+            MOBILE TESTING (390×844):
+            ✅ Modal opens successfully on mobile
+            ✅ Touch scroll works perfectly (scroll position: 0px → 575px)
+            ✅ WhatsApp and Call buttons reachable on mobile
+            ✅ Modal closes properly on mobile
+            
+            ADDITIONAL VERIFICATIONS:
+            ✅ "Price on Request" displays in italic font (class="italic" present)
+            ⚠️ Minor: Found 1 instance of "lead time" text on page (in category story: "with a lead time that reflects the craft it demands"). This text is in /app/components/tyra/company.js CATEGORY_META.sculptures.story and appears in the background page content, NOT in the modal itself. The modal does not display any "Lead time" text.
+            
+            CONCLUSION: The scroll bug fix is complete and working perfectly. Users can now scroll the modal from anywhere (image side, details side, or between) to reach all content including the CTA buttons at the bottom. The modal scroll mechanism works as a single scrollable unit as intended. The "lead time" text found is in the category description on the page, not in the product modal.
+
+  - task: "Categories grid layout — 6 uniform cards, no orphaned rows"
+    implemented: true
+    working: true
+    file: "/app/app/page.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Already verified visually — screenshot shows 6 cards in a balanced 3×2 grid on desktop."
+
+  - task: "Lead time removed from sculpture cards and modal"
+    implemented: true
+    working: true
+    file: "/app/components/tyra/product-card.js, /app/components/tyra/product-modal.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "grep confirms no `leadTime` / `Lead time` / `LEAD TIME` string remains in either component file."
+
+  - task: "Sculptures added to admin category dropdown"
+    implemented: true
+    working: true
+    file: "/app/app/admin/page.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Added <SelectItem value='sculptures'>Sculptures</SelectItem> to the Category select and added 'sculptures' to the admin filter pill row."
+
+backend:
+  - task: "All products availability set to 'In Stock'"
+    implemented: true
+    working: true
+    file: "/app/lib/products-data.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "Previous test run confirmed all products return In Stock (except sculptures which correctly return 'Made on Demand')."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.2"
+  test_sequence: 2
+  run_ui: true
+
+test_plan:
+  current_focus: []
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "main"
+      message: |
+        Modal scroll bug fixed. Please open the sculpture modal at /category/sculptures (click any card,
+        e.g. "The Bumble Bee") and verify the user can scroll the modal contents to reach the
+        "Enquire via WhatsApp" and "Call +91 63079 94944" buttons + the small "All prices exclusive of GST"
+        footer text. Try scrolling from the image side, the details side, and touch-scroll on mobile.
+        Admin credentials (if you need them): username `TyraDecor`, password `TyraDecor@2026`.
+    - agent: "testing"
+      message: |
+        ✅ TESTING COMPLETE - Modal scroll bug fix verified successfully.
+        
+        All tests passed on both desktop (1920×1080) and mobile (390×844) viewports:
+        - Modal scrolls as a single unit from anywhere (image column, details column, or between)
+        - All content reachable: description, spec rows, CTA buttons, footer
+        - Close button remains accessible when scrolled
+        - Backdrop click closes modal
+        - No scroll-lock on main page after closing
+        - "Price on Request" displays in italic as expected
+        
+        Minor note: Found "lead time" text in the category story on the background page (/app/components/tyra/company.js), but NOT in the modal itself. The modal is clean of any "Lead time" references.
+        
+        The bug fix is working perfectly. Users can now reach the WhatsApp and Call buttons by scrolling within the modal.
 
 backend:
   - task: "All products availability set to 'In Stock'"

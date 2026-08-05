@@ -41,20 +41,20 @@ export function ProductModal({ product, onClose }) {
             exit={{ opacity: 0, y: 40, scale: 0.98 }}
             transition={{ duration: 0.4, ease: [0.2, 0.7, 0.2, 1] }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-6xl max-h-[92vh] bg-cream-light rounded-[2rem] overflow-hidden shadow-2xl border border-champagne/30"
+            className="relative w-full max-w-6xl max-h-[92vh] bg-cream-light rounded-[2rem] overflow-y-auto overflow-x-hidden shadow-2xl border border-champagne/30"
           >
             {/* Close */}
             <button
               onClick={onClose}
-              className="absolute top-5 right-5 z-10 w-11 h-11 rounded-full bg-white/95 hover:bg-white text-charcoal flex items-center justify-center shadow-lg border border-black/5"
+              className="fixed md:absolute top-5 right-5 z-20 w-11 h-11 rounded-full bg-white/95 hover:bg-white text-charcoal flex items-center justify-center shadow-lg border border-black/5"
               aria-label="Close"
             >
               <X size={18} />
             </button>
 
-            <div className="grid md:grid-cols-5 max-h-[92vh] overflow-hidden">
+            <div className="grid md:grid-cols-5">
               {/* Left — image with zoom lens */}
-              <div className="md:col-span-3 bg-cream-light relative border-b md:border-b-0 md:border-r border-black/5">
+              <div className="md:col-span-3 bg-cream-light relative border-b md:border-b-0 md:border-r border-black/5 md:sticky md:top-0 md:self-start md:max-h-[92vh]">
                 <div className="absolute top-5 left-5 z-10 flex items-center gap-2">
                   {product.featured && (
                     <span className="text-[10px] uppercase tracking-widest bg-gold text-white px-3 py-1 rounded-full font-semibold shadow-sm">
@@ -67,7 +67,7 @@ export function ProductModal({ product, onClose }) {
                     </span>
                   )}
                 </div>
-                <div className="h-[45vh] md:h-full min-h-[300px]">
+                <div className="h-[50vh] md:h-[92vh]">
                   <ZoomImage
                     src={product.image}
                     alt={product.name}
@@ -82,8 +82,8 @@ export function ProductModal({ product, onClose }) {
                 </div>
               </div>
 
-              {/* Right — details */}
-              <div className="md:col-span-2 p-6 md:p-8 lg:p-10 overflow-y-auto">
+              {/* Right — details (flows naturally, page scroll handles overflow) */}
+              <div className="md:col-span-2 p-6 md:p-8 lg:p-10">
                 <div className="text-[10px] uppercase tracking-[0.4em] text-gold font-semibold mb-3">
                   {product.category} · {product.sku}
                 </div>
