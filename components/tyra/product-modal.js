@@ -148,13 +148,13 @@ export function ProductModal({ product, onClose }) {
                       Enquire via WhatsApp
                     </Button>
                   </a>
-                  <a href={`tel:${COMPANY.phone1}`}>
+                  <a href={`tel:${COMPANY.phone}`}>
                     <Button
                       variant="outline"
                       className="w-full bg-transparent border-charcoal/20 hover:bg-charcoal hover:text-white rounded-full h-12 uppercase text-[11px] tracking-[0.3em] font-semibold"
                     >
                       <Phone size={14} className="mr-2" />
-                      Call {COMPANY.phone1}
+                      Call {COMPANY.phone}
                     </Button>
                   </a>
                 </div>

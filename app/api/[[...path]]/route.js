@@ -28,10 +28,12 @@ async function ensureSeed(db) {
   }
 }
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'tyra2025';
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'TyraDecor';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'TyraDecor@2026';
 function isAdmin(req) {
   const auth = req.headers.get('x-admin-password') || '';
-  return auth === ADMIN_PASSWORD;
+  const user = req.headers.get('x-admin-username') || '';
+  return auth === ADMIN_PASSWORD && user === ADMIN_USERNAME;
 }
 
 function json(data, status = 200) {
@@ -188,10 +190,36 @@ async function route(req, method, segments) {
   // POST /api/admin/verify
   if (method === 'POST' && path === 'admin/verify') {
     const body = await req.json();
-    if (body.password === ADMIN_PASSWORD) {
+    if (body.username === ADMIN_USERNAME && body.password === ADMIN_PASSWORD) {
       return json({ ok: true });
     }
     return json({ ok: false }, 401);
+  }
+
+  // POST /api/upload  — accepts { filename, dataUrl } and saves to /public/products/
+  if (method === 'POST' && path === 'upload') {
+    if (!isAdmin(req)) return json({ error: 'Unauthorized' }, 401);
+    const fs = await import('fs');
+    const pathMod = await import('path');
+    const body = await req.json();
+    if (!body.dataUrl || !body.filename) {
+      return json({ error: 'filename and dataUrl required' }, 400);
+    }
+    const match = body.dataUrl.match(/^data:(image\/(png|jpeg|jpg|webp|gif));base64,(.+)$/);
+    if (!match) return json({ error: 'Invalid image dataUrl' }, 400);
+    const ext = match[2] === 'jpeg' ? 'jpg' : match[2];
+    const buf = Buffer.from(match[3], 'base64');
+    // Sanitise filename
+    const safe = body.filename
+      .toLowerCase()
+      .replace(/\.[a-z0-9]+$/, '')
+      .replace(/[^a-z0-9-_]/g, '-')
+      .slice(0, 60);
+    const finalName = `${safe || 'upload'}-${Date.now()}.${ext}`;
+    const dir = pathMod.join(process.cwd(), 'public', 'products');
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(pathMod.join(dir, finalName), buf);
+    return json({ ok: true, url: `/products/${finalName}` }, 201);
   }
 
   // POST /api/reseed (admin only)

@@ -68,11 +68,11 @@ export function Navbar({ activeSlug = null, categoryLinks = true }) {
           })}
         </nav>
         <a
-          href={`tel:${COMPANY.phone1}`}
+          href={`tel:${COMPANY.phone}`}
           className="hidden md:inline-flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase text-charcoal hover:text-gold font-semibold"
         >
           <Phone size={13} />
-          {COMPANY.phone1}
+          {COMPANY.phone}
         </a>
         <button
           className="lg:hidden p-2"
@@ -102,10 +102,10 @@ export function Navbar({ activeSlug = null, categoryLinks = true }) {
                 </Link>
               ))}
               <a
-                href={`tel:${COMPANY.phone1}`}
+                href={`tel:${COMPANY.phone}`}
                 className="text-sm text-gold py-1 uppercase tracking-widest"
               >
-                {COMPANY.phone1}
+                {COMPANY.phone}
               </a>
             </div>
           </motion.div>
@@ -166,8 +166,7 @@ export function Footer() {
               Contact
             </div>
             <ul className="space-y-2 text-sm">
-              <li><a href={`tel:${COMPANY.phone1}`} className="hover:text-white">{COMPANY.phone1}</a></li>
-              <li><a href={`tel:${COMPANY.phone2}`} className="hover:text-white">{COMPANY.phone2}</a></li>
+              <li><a href={`tel:${COMPANY.phone}`} className="hover:text-white">{COMPANY.phone}</a></li>
               <li><a href={`mailto:${COMPANY.email}`} className="hover:text-white">{COMPANY.email}</a></li>
               <li className="text-white/60 pt-1">{COMPANY.address}</li>
             </ul>

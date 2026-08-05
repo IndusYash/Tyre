@@ -642,7 +642,7 @@ function CTABanner() {
                   Chat on WhatsApp
                 </Button>
               </a>
-              <a href={`tel:${COMPANY.phone1}`}>
+              <a href={`tel:${COMPANY.phone}`}>
                 <Button
                   variant="outline"
                   className="bg-transparent border-white/30 hover:bg-white hover:text-charcoal text-white rounded-full px-8 h-12 uppercase text-[11px] tracking-[0.3em] font-semibold"

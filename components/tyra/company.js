@@ -1,11 +1,10 @@
 export const COMPANY = {
   name: 'Tyra Décor',
   tagline: 'Recycled. Refined. Remarkable.',
-  phone1: '+91 77040 07055',
-  phone2: '+91 63079 94948',
+  phone: '+91 63079 94944',
   email: 'tyra.decor@gmail.com',
   instagram: 'tyra.decor',
-  whatsapp: '917704007055',
+  whatsapp: '916307994944',
   address: '128/18, Y-Block, Kidwai Nagar, Kanpur, U.P. – 208011, India',
   parent: 'A Brand by R.B. Tubes Pvt. Ltd.',
 };
