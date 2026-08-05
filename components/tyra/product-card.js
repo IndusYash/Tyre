@@ -72,16 +72,9 @@ export function ProductCard({ product, onOpen }) {
         <div className="mt-auto pt-4 border-t border-black/5 flex items-end justify-between">
           <div>
             {product.priceOnRequest ? (
-              <>
-                <div className="font-serif text-lg text-charcoal font-medium italic">
-                  Price on Request
-                </div>
-                {product.leadTime && (
-                  <div className="text-[10px] uppercase tracking-widest text-muted-warm mt-1">
-                    Lead time: {product.leadTime}
-                  </div>
-                )}
-              </>
+              <div className="font-serif text-lg text-charcoal font-medium italic">
+                Price on Request
+              </div>
             ) : (
               <>
                 <div className="font-serif text-2xl text-charcoal font-medium">

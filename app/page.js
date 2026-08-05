@@ -305,53 +305,50 @@ function Categories({ counts }) {
         </p>
       </div>
 
-      <div className="grid grid-cols-12 gap-4 md:gap-6">
-        {/* Big "All" card */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        {/* "All" card — same size as others, dark treatment */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="col-span-12 lg:col-span-6 lg:row-span-2"
+          className="col-span-2 md:col-span-3 lg:col-span-1"
         >
           <Link
             href="/category/all"
-            className="group relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#1C1A17] to-[#2b2620] text-white text-left border border-champagne/30 flex flex-col h-full min-h-[400px] lg:min-h-[640px]"
+            className="group relative overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-[#1C1A17] to-[#2b2620] text-white text-left border border-champagne/30 flex flex-col h-full min-h-[380px]"
           >
             <div className="absolute inset-0">
               <img
                 src={CAT_CARDS[0].image}
                 alt=""
-                className="w-full h-full object-contain p-12 opacity-30 group-hover:opacity-40 group-hover:scale-105 transition-all duration-700"
+                className="w-full h-full object-contain p-6 opacity-25 group-hover:opacity-35 group-hover:scale-105 transition-all duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-charcoal/95 via-charcoal/70 to-transparent" />
             </div>
-            <div className="absolute top-6 right-6 flex items-center gap-2 text-[10px] uppercase tracking-[0.4em] text-champagne">
+            <div className="absolute top-4 right-4 flex items-center gap-2 text-[9px] uppercase tracking-[0.35em] text-champagne">
               <span>Est. 2025</span>
               <span>✦</span>
             </div>
-            <div className="relative p-8 md:p-12 lg:p-16 mt-auto">
-              <div className="w-14 h-14 rounded-full border border-champagne/50 flex items-center justify-center text-champagne mb-6 group-hover:bg-champagne group-hover:text-charcoal transition-colors">
-                <LayoutGrid size={22} />
+            <div className="relative p-6 md:p-7 mt-auto">
+              <div className="w-11 h-11 rounded-full border border-champagne/50 flex items-center justify-center text-champagne mb-5 group-hover:bg-champagne group-hover:text-charcoal transition-colors">
+                <LayoutGrid size={17} />
               </div>
-              <p className="text-[10px] md:text-[11px] uppercase tracking-[0.4em] text-champagne font-semibold mb-3">
+              <p className="text-[10px] uppercase tracking-[0.35em] text-champagne font-semibold mb-2">
                 The Full Range
               </p>
-              <h3 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.02] mb-4">
+              <h3 className="font-display text-3xl md:text-4xl font-medium leading-[1.02] mb-3">
                 Explore <span className="italic">all pieces</span>
               </h3>
-              <p className="text-white/70 text-sm md:text-base lg:text-lg leading-relaxed mb-8 max-w-md">
-                Browse the entire Tyra Décor catalogue — every chair, table, planter and
-                suite in one place.
+              <p className="text-white/65 text-sm leading-relaxed mb-5">
+                Every chair, table, planter, suite and sculpture in one place.
               </p>
-              <div className="inline-flex items-center gap-3 text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-semibold text-champagne group-hover:text-white transition-colors">
-                <span className="inline-flex items-center gap-1.5">
-                  View Full Collection
-                  <ArrowUpRight
-                    size={14}
-                    className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-                  />
-                </span>
+              <div className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-semibold text-champagne group-hover:text-white transition-colors">
+                View Full Collection
+                <ArrowUpRight
+                  size={13}
+                  className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                />
               </div>
             </div>
           </Link>
@@ -364,37 +361,37 @@ function Categories({ counts }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: (i + 1) * 0.08 }}
-            className="col-span-6 lg:col-span-3"
+            className="col-span-1"
           >
             <Link
               href={`/category/${c.slug}`}
-              className="group relative overflow-hidden rounded-[1.75rem] bg-cream-light border border-black/5 hover:border-gold/40 text-left transition-all hover-lift flex flex-col h-full"
+              className="group relative overflow-hidden rounded-[1.75rem] bg-cream-light border border-black/5 hover:border-gold/40 text-left transition-all hover-lift flex flex-col h-full min-h-[380px]"
             >
               <div className="relative aspect-square bg-cream-light overflow-hidden">
                 <img
                   src={c.image}
                   alt={c.name}
-                  className="w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-contain p-5 transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute top-4 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-gold shadow-sm border border-gold/20 group-hover:bg-gold group-hover:text-white group-hover:border-gold transition-all">
-                  <c.icon size={17} />
+                <div className="absolute top-4 left-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-gold shadow-sm border border-gold/20 group-hover:bg-gold group-hover:text-white group-hover:border-gold transition-all">
+                  <c.icon size={16} />
                 </div>
-                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cream-light to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-cream-light to-transparent pointer-events-none" />
               </div>
-              <div className="p-5 md:p-6 bg-white flex items-center justify-between border-t border-black/5">
+              <div className="p-4 md:p-5 bg-white flex items-center justify-between border-t border-black/5">
                 <div className="min-w-0">
-                  <p className="text-[9px] uppercase tracking-[0.35em] text-gold font-semibold mb-1">
+                  <p className="text-[9px] uppercase tracking-[0.3em] text-gold font-semibold mb-1 truncate">
                     {c.accent}
                   </p>
-                  <div className="font-serif text-2xl text-charcoal font-medium truncate">
+                  <div className="font-serif text-xl md:text-2xl text-charcoal font-medium truncate">
                     {c.name}
                   </div>
-                  <div className="text-[11px] uppercase tracking-[0.2em] text-muted-warm mt-0.5 truncate italic">
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-muted-warm mt-0.5 truncate italic">
                     {c.tagline}
                   </div>
                 </div>
-                <div className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center flex-shrink-0 ml-3 group-hover:bg-charcoal group-hover:border-charcoal group-hover:text-white transition-all">
-                  <ArrowUpRight size={15} />
+                <div className="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center flex-shrink-0 ml-2 group-hover:bg-charcoal group-hover:border-charcoal group-hover:text-white transition-all">
+                  <ArrowUpRight size={14} />
                 </div>
               </div>
             </Link>

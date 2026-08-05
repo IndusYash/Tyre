@@ -415,7 +415,7 @@ export default function AdminPage() {
                 />
               </div>
               <div className="flex flex-wrap gap-2">
-                {['all', 'chairs', 'tables', 'planters', 'suites'].map((c) => (
+                {['all', 'chairs', 'tables', 'planters', 'suites', 'sculptures'].map((c) => (
                   <button
                     key={c}
                     onClick={() => setFilter(c)}
@@ -634,6 +634,7 @@ export default function AdminPage() {
                       <SelectItem value="tables">Tables</SelectItem>
                       <SelectItem value="planters">Planters</SelectItem>
                       <SelectItem value="suites">Suites</SelectItem>
+                      <SelectItem value="sculptures">Sculptures</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
