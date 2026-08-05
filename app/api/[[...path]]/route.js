@@ -154,39 +154,6 @@ async function route(req, method, segments) {
     return json({ ok: true });
   }
 
-  // POST /api/enquiries
-  if (method === 'POST' && path === 'enquiries') {
-    const body = await req.json();
-    const doc = {
-      id: uuidv4(),
-      name: body.name || '',
-      email: body.email || '',
-      phone: body.phone || '',
-      message: body.message || '',
-      productSku: body.productSku || null,
-      productName: body.productName || null,
-      createdAt: new Date().toISOString(),
-    };
-    if (!doc.name || (!doc.email && !doc.phone)) {
-      return json({ error: 'Name and email/phone are required.' }, 400);
-    }
-    await db.collection('enquiries').insertOne(doc);
-    const { _id, ...rest } = doc;
-    return json({ enquiry: rest }, 201);
-  }
-
-  // GET /api/enquiries (admin)
-  if (method === 'GET' && path === 'enquiries') {
-    if (!isAdmin(req)) return json({ error: 'Unauthorized' }, 401);
-    let items = await db
-      .collection('enquiries')
-      .find({})
-      .sort({ createdAt: -1 })
-      .toArray();
-    items = items.map(({ _id, ...rest }) => rest);
-    return json({ enquiries: items });
-  }
-
   // POST /api/admin/verify
   if (method === 'POST' && path === 'admin/verify') {
     const body = await req.json();

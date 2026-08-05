@@ -37,11 +37,9 @@ import {
   Trash2,
   LogOut,
   Star,
-  Mail,
   Upload,
   Package,
   Tag,
-  TrendingUp,
   Search,
   ImageIcon,
   Percent,
@@ -72,9 +70,7 @@ export default function AdminPage() {
   const [password, setPassword] = useState('');
   const [checking, setChecking] = useState(false);
 
-  const [tab, setTab] = useState('products');
   const [products, setProducts] = useState([]);
-  const [enquiries, setEnquiries] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(emptyForm);
@@ -107,7 +103,7 @@ export default function AdminPage() {
         setAuthed(true);
         localStorage.setItem('td_admin_u', u);
         localStorage.setItem('td_admin_p', p);
-        await loadAll(u, p);
+        await loadAll();
       } else {
         toast.error('Incorrect username or password.');
         localStorage.removeItem('td_admin_u');
@@ -125,15 +121,10 @@ export default function AdminPage() {
     'x-admin-password': p,
   });
 
-  const loadAll = async (u = username, p = password) => {
-    const [pRes, eRes] = await Promise.all([
-      fetch('/api/products'),
-      fetch('/api/enquiries', { headers: authHeaders(u, p) }),
-    ]);
+  const loadAll = async () => {
+    const pRes = await fetch('/api/products');
     const pd = await pRes.json();
-    const ed = await eRes.json();
     setProducts(pd.products || []);
-    setEnquiries(ed.enquiries || []);
   };
 
   const openNew = () => {
@@ -357,27 +348,9 @@ export default function AdminPage() {
             <span className="hidden md:inline text-white/50 text-xs ml-3 uppercase tracking-widest">Admin</span>
           </Link>
           <div className="flex items-center gap-2 md:gap-4">
-            <button
-              onClick={() => setTab('products')}
-              className={`px-3 md:px-4 py-1.5 text-[11px] uppercase tracking-widest rounded-full transition ${
-                tab === 'products' ? 'bg-champagne text-charcoal' : 'text-white/70 hover:text-white'
-              }`}
-            >
+            <span className="hidden md:inline text-[11px] uppercase tracking-widest text-champagne font-semibold">
               Products
-            </button>
-            <button
-              onClick={() => setTab('enquiries')}
-              className={`px-3 md:px-4 py-1.5 text-[11px] uppercase tracking-widest rounded-full transition ${
-                tab === 'enquiries' ? 'bg-champagne text-charcoal' : 'text-white/70 hover:text-white'
-              }`}
-            >
-              Enquiries
-              {enquiries.length > 0 && (
-                <span className="ml-1.5 bg-white/20 text-[10px] rounded-full px-1.5 py-0.5">
-                  {enquiries.length}
-                </span>
-              )}
-            </button>
+            </span>
             <button
               onClick={logout}
               className="ml-2 text-xs text-white/60 hover:text-white flex items-center gap-1"
@@ -391,7 +364,7 @@ export default function AdminPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 md:px-6 py-8">
-        {tab === 'products' && (
+        {true && (
           <>
             {/* Welcome */}
             <div className="mb-8">
@@ -562,71 +535,6 @@ export default function AdminPage() {
                   </TableBody>
                 </Table>
               </div>
-            </div>
-          </>
-        )}
-
-        {tab === 'enquiries' && (
-          <>
-            <div className="mb-8">
-              <p className="text-[11px] uppercase tracking-[0.4em] text-gold font-semibold mb-2">
-                Inbox
-              </p>
-              <h1 className="font-serif text-3xl md:text-4xl text-charcoal font-medium">
-                Customer Enquiries
-              </h1>
-              <p className="text-muted-warm mt-2">
-                Every message sent through the site.
-              </p>
-            </div>
-            <div className="grid gap-4">
-              {enquiries.length === 0 && (
-                <div className="text-center py-24 bg-white border border-black/5 rounded-2xl text-muted-warm">
-                  No enquiries yet. When customers submit the form, they will appear here.
-                </div>
-              )}
-              {enquiries.map((e) => (
-                <div key={e.id} className="bg-white border border-black/5 rounded-2xl p-6">
-                  <div className="flex items-start justify-between mb-3 gap-4 flex-wrap">
-                    <div>
-                      <div className="font-serif text-xl text-charcoal">{e.name}</div>
-                      <div className="text-xs text-muted-warm mt-0.5">
-                        {e.email}
-                        {e.phone && ` · ${e.phone}`}
-                      </div>
-                    </div>
-                    <div className="text-xs text-muted-warm">
-                      {new Date(e.createdAt).toLocaleString('en-IN')}
-                    </div>
-                  </div>
-                  {e.productName && (
-                    <div className="inline-block bg-gold/10 text-gold border border-gold/20 text-[11px] uppercase tracking-widest rounded-full px-3 py-1 mb-3 font-semibold">
-                      About: {e.productName} ({e.productSku})
-                    </div>
-                  )}
-                  <p className="text-sm text-charcoal/90 whitespace-pre-wrap leading-relaxed">
-                    {e.message}
-                  </p>
-                  <div className="mt-4 flex gap-4">
-                    <a
-                      href={`mailto:${e.email}`}
-                      className="text-xs uppercase tracking-widest text-gold hover:underline flex items-center gap-1 font-semibold"
-                    >
-                      <Mail size={12} /> Reply by Email
-                    </a>
-                    {e.phone && (
-                      <a
-                        href={`https://wa.me/${e.phone.replace(/\D/g, '')}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-xs uppercase tracking-widest text-gold hover:underline font-semibold"
-                      >
-                        WhatsApp
-                      </a>
-                    )}
-                  </div>
-                </div>
-              ))}
             </div>
           </>
         )}
