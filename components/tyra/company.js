@@ -54,6 +54,17 @@ export const CATEGORY_META = {
     heroImage: '/products/suite-sovereign.jpg',
     accent: 'Complete Ensembles',
   },
+  sculptures: {
+    slug: 'sculptures',
+    name: 'Sculptures',
+    displayName: 'The Sculpture Atelier',
+    tagline: 'Made on Demand',
+    heroTitle: 'Monumental art, reborn.',
+    heroSub: 'Life-size and larger-than-life sculptures — each one hand-woven from thousands of recycled tyre pieces by our master artisans. Statement art for landscapes, resorts, estates and hospitality spaces.',
+    story: 'Every sculpture in this collection is a commission. From the first sketch to the final coat of paint, our artisans spend months layer-by-layer building forms that carry the presence of monumental art. Because they are made after your order, each piece is uniquely yours — with a lead time that reflects the craft it demands.',
+    heroImage: '/products/sculptures/bumble-bee.jpg',
+    accent: 'Commissioned Craft',
+  },
 };
 
 export const whatsappLink = (p) => {

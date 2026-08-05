@@ -71,17 +71,32 @@ export function ProductCard({ product, onOpen }) {
         </ul>
         <div className="mt-auto pt-4 border-t border-black/5 flex items-end justify-between">
           <div>
-            <div className="font-serif text-2xl text-charcoal font-medium">
-              {inr(product.price)}
-            </div>
-            {product.originalPrice > product.price && (
-              <div className="text-xs text-muted-warm line-through">
-                {inr(product.originalPrice)}
-              </div>
+            {product.priceOnRequest ? (
+              <>
+                <div className="font-serif text-lg text-charcoal font-medium italic">
+                  Price on Request
+                </div>
+                {product.leadTime && (
+                  <div className="text-[10px] uppercase tracking-widest text-muted-warm mt-1">
+                    Lead time: {product.leadTime}
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                <div className="font-serif text-2xl text-charcoal font-medium">
+                  {inr(product.price)}
+                </div>
+                {product.originalPrice > product.price && (
+                  <div className="text-xs text-muted-warm line-through">
+                    {inr(product.originalPrice)}
+                  </div>
+                )}
+                <div className="text-[10px] uppercase tracking-widest text-muted-warm mt-1">
+                  + GST
+                </div>
+              </>
             )}
-            <div className="text-[10px] uppercase tracking-widest text-muted-warm mt-1">
-              + GST
-            </div>
           </div>
           <span
             className={`text-[10px] uppercase tracking-widest inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ${

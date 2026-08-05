@@ -285,6 +285,7 @@ const CAT_CARDS = [
   { slug: 'tables', name: 'Tables', tagline: 'Statement centrepieces', image: '/products/hub-table.jpg', icon: TableIcon, accent: 'Enduring Craft' },
   { slug: 'planters', name: 'Planters', tagline: 'Anchoring greenery', image: '/products/estate-planter.jpg', icon: Flower2, accent: 'For Living Décor' },
   { slug: 'suites', name: 'Suites', tagline: 'Curated sets', image: '/products/suite-sovereign.jpg', icon: LayoutGrid, accent: 'Complete Ensembles' },
+  { slug: 'sculptures', name: 'Sculptures', tagline: 'Made-to-order art', image: '/products/sculptures/bumble-bee.jpg', icon: Sparkles, accent: 'Commissioned Craft' },
 ];
 
 function Categories({ counts }) {

@@ -97,18 +97,33 @@ export function ProductModal({ product, onClose }) {
                 )}
 
                 {/* Price */}
-                <div className="flex items-baseline gap-3 mb-6 pb-6 border-b border-black/10">
-                  <div className="font-serif text-4xl text-charcoal font-medium">
-                    {inr(product.price)}
-                  </div>
-                  {product.originalPrice > product.price && (
-                    <div className="text-base text-muted-warm line-through">
-                      {inr(product.originalPrice)}
-                    </div>
+                <div className="flex items-baseline gap-3 mb-6 pb-6 border-b border-black/10 flex-wrap">
+                  {product.priceOnRequest ? (
+                    <>
+                      <div className="font-serif text-3xl md:text-4xl text-charcoal font-medium italic">
+                        Price on Request
+                      </div>
+                      {product.leadTime && (
+                        <div className="text-xs uppercase tracking-widest text-gold font-semibold w-full mt-1">
+                          Lead time: {product.leadTime}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <div className="font-serif text-4xl text-charcoal font-medium">
+                        {inr(product.price)}
+                      </div>
+                      {product.originalPrice > product.price && (
+                        <div className="text-base text-muted-warm line-through">
+                          {inr(product.originalPrice)}
+                        </div>
+                      )}
+                      <div className="text-[10px] uppercase tracking-widest text-muted-warm">
+                        + GST
+                      </div>
+                    </>
                   )}
-                  <div className="text-[10px] uppercase tracking-widest text-muted-warm">
-                    + GST
-                  </div>
                 </div>
 
                 {/* Description */}

@@ -48,6 +48,7 @@ const OTHER_CATS = [
   { slug: 'tables', name: 'Tables', icon: TableIcon, image: '/products/hub-table.jpg' },
   { slug: 'planters', name: 'Planters', icon: Flower2, image: '/products/estate-planter.jpg' },
   { slug: 'suites', name: 'Suites', icon: LayoutGrid, image: '/products/suite-sovereign.jpg' },
+  { slug: 'sculptures', name: 'Sculptures', icon: LayoutGrid, image: '/products/sculptures/bumble-bee.jpg' },
 ];
 
 export default function CategoryPage() {
@@ -351,7 +352,7 @@ export default function CategoryPage() {
               No pieces match your filters. Try adjusting your search.
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className={`grid grid-cols-1 sm:grid-cols-2 ${slug === 'sculptures' ? 'lg:grid-cols-2 gap-8 md:gap-10 max-w-5xl mx-auto' : 'lg:grid-cols-3 xl:grid-cols-4 gap-6'}`}>
               {filtered.map((p) => (
                 <ProductCard
                   key={p.id || p.sku}

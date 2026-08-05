@@ -23,6 +23,7 @@ export function Navbar({ activeSlug = null, categoryLinks = true }) {
     { href: '/category/tables', label: 'Tables', slug: 'tables' },
     { href: '/category/planters', label: 'Planters', slug: 'planters' },
     { href: '/category/suites', label: 'Suites', slug: 'suites' },
+    { href: '/category/sculptures', label: 'Sculptures', slug: 'sculptures' },
     { href: '/#reviews', label: 'Reviews' },
   ];
 
@@ -159,6 +160,7 @@ export function Footer() {
               <li><Link href="/category/tables" className="hover:text-white">Tables</Link></li>
               <li><Link href="/category/planters" className="hover:text-white">Planters</Link></li>
               <li><Link href="/category/suites" className="hover:text-white">Suites</Link></li>
+              <li><Link href="/category/sculptures" className="hover:text-white">Sculptures</Link></li>
             </ul>
           </div>
           <div>
