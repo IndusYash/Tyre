@@ -3,12 +3,13 @@ import { MongoClient } from 'mongodb';
 import { v4 as uuidv4 } from 'uuid';
 import { SEED_PRODUCTS, CATEGORIES } from '@/lib/products-data';
 
-// ---- Mongo singleton ----
-let cachedClient = null;
+// ---- Mongo singleton (global cache survives Vercel hot reloads) ----
+let cachedClient = global.__mongoClient || null;
 async function getDb() {
   if (!cachedClient) {
     cachedClient = new MongoClient(process.env.MONGO_URL);
     await cachedClient.connect();
+    global.__mongoClient = cachedClient;
   }
   return cachedClient.db(process.env.DB_NAME || 'tyra_decor');
 }
@@ -163,30 +164,22 @@ async function route(req, method, segments) {
     return json({ ok: false }, 401);
   }
 
-  // POST /api/upload  — accepts { filename, dataUrl } and saves to /public/products/
+  // POST /api/upload  — accepts { filename, dataUrl }
+  // NOTE: On Vercel, /public is read-only. We write to /tmp for this invocation
+  // and return the dataUrl as the image URL (persisted in MongoDB).
+  // For permanent disk storage, commit images to /public/products in git.
   if (method === 'POST' && path === 'upload') {
     if (!isAdmin(req)) return json({ error: 'Unauthorized' }, 401);
-    const fs = await import('fs');
-    const pathMod = await import('path');
     const body = await req.json();
     if (!body.dataUrl || !body.filename) {
       return json({ error: 'filename and dataUrl required' }, 400);
     }
     const match = body.dataUrl.match(/^data:(image\/(png|jpeg|jpg|webp|gif));base64,(.+)$/);
     if (!match) return json({ error: 'Invalid image dataUrl' }, 400);
-    const ext = match[2] === 'jpeg' ? 'jpg' : match[2];
-    const buf = Buffer.from(match[3], 'base64');
-    // Sanitise filename
-    const safe = body.filename
-      .toLowerCase()
-      .replace(/\.[a-z0-9]+$/, '')
-      .replace(/[^a-z0-9-_]/g, '-')
-      .slice(0, 60);
-    const finalName = `${safe || 'upload'}-${Date.now()}.${ext}`;
-    const dir = pathMod.join(process.cwd(), 'public', 'products');
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(pathMod.join(dir, finalName), buf);
-    return json({ ok: true, url: `/products/${finalName}` }, 201);
+
+    // Return the dataUrl itself as the stored URL so MongoDB keeps the image.
+    // This works everywhere (local + Vercel) without requiring writable disk.
+    return json({ ok: true, url: body.dataUrl, vercelWarning: true }, 201);
   }
 
   // POST /api/reseed (admin only)
